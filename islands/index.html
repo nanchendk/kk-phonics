@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KK 音標冒險群島｜探索式學習</title>
+<style>
+:root{--navy:#12365b;--blue:#2777c6;--sky:#d9f3ff;--cream:#fffdf3;--line:#c5e0ed}*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"Noto Sans TC",sans-serif;color:var(--navy);background:#e9f7ff}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #ffbd47;outline-offset:3px}
+header{background:linear-gradient(120deg,#12477a,#238bc5);color:white;padding:18px max(18px,calc((100vw - 1100px)/2));display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:clamp(21px,3vw,30px)}header p{margin:5px 0 0;opacity:.9;font-size:13px}header a{color:white}
+main{max-width:1100px;margin:auto;padding:20px 16px 60px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}.stat{background:white;border:1px solid var(--line);padding:11px 16px;border-radius:15px;font-size:14px}.stat strong{font-size:19px;color:#1673bd}
+.world{position:relative;overflow:hidden;min-height:570px;border:7px solid white;border-radius:27px;background:radial-gradient(ellipse at 30% 10%,#8fe9f2,#47c4dc 62%,#2099c5);box-shadow:0 15px 40px #1b6b9c25}
+.world:before{content:"";position:absolute;inset:0;opacity:.25;pointer-events:none;background:repeating-radial-gradient(ellipse at 60% 55%,transparent 0 28px,#eaffff 29px 31px,transparent 32px 68px)}
+.cloud{position:absolute;color:white;opacity:.65;font-size:45px;pointer-events:none}.cloud.a{left:8%;top:7%}.cloud.b{right:12%;top:14%}
+.island{position:absolute;width:clamp(110px,15%,162px);aspect-ratio:1.2;border:0;border-radius:49% 51% 46% 54%;background:radial-gradient(ellipse at 45% 35%,#b3e884 0 34%,#75c87b 35% 62%,#f4e6a4 63% 75%,#3aaac1 76%);box-shadow:0 10px 0 #1587aa,0 18px 20px #085e8c55;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transform:translate(-50%,-50%);transition:transform .2s}
+.island:hover{transform:translate(-50%,-55%) scale(1.06)}.island .emoji{font-size:32px;filter:drop-shadow(0 3px 1px #336a5033)}.island b{font-size:13px;background:#ffffffe8;border-radius:9px;padding:3px 6px}.island small{font-size:10px;background:#ffffffb9;border-radius:8px;padding:2px 5px}
+.island.done{box-shadow:0 10px 0 #1587aa,0 18px 20px #085e8c55,0 0 0 5px #ffe17c}
+.legend{position:absolute;bottom:12px;left:14px;background:#ffffffde;padding:9px 12px;border-radius:12px;font-size:12px}
+.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:22px;margin-top:16px;box-shadow:0 6px 24px #21618d10}
+.panel h2{margin:0 0 8px}.sub{color:#58718b;font-size:14px}
+.back,.primary,.secondary{border:0;border-radius:11px;padding:11px 15px}.primary{background:#1673bd;color:white}.secondary,.back{background:#e7f4ff;color:#18578c}
+.buildings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.building{border:2px solid #d4e7f5;background:linear-gradient(#fff,#f0f9ff);border-radius:18px;padding:22px 12px;min-height:150px;text-align:center}
+.building:hover{border-color:#1681ca}.building .emoji{display:block;font-size:44px}.building strong{display:block;margin:7px 0}
+.soundgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:16px}
+.sound{border:1px solid #c8dff1;border-radius:14px;background:#f4faff;padding:14px;text-align:center}
+.sound b{font-size:27px;display:block}.sound span{font-size:13px;color:#59728a}.sound em{display:block;font-style:normal;margin-top:6px}
+.question{font-size:21px;font-weight:750;margin:20px 0}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.answer{padding:15px;border:2px solid #cfe1f0;background:#f9fcff;border-radius:13px;text-align:left}.answer.correct{background:#d9f8e8;border-color:#29a775}.answer.wrong{background:#ffebeb;border-color:#dd7070}
+.dialog{display:flex;gap:12px;align-items:flex-start;background:#eef8ff;border-radius:17px;padding:16px;margin:16px 0}.avatar{font-size:36px}.dialog p{margin:3px 0 0;line-height:1.8}
+.hidden{display:none!important}footer{text-align:center;padding:25px;color:#58718b;font-size:12px}
+@media(max-width:650px){.world{min-height:700px}.island{width:28%}.island .emoji{font-size:25px}.island b{font-size:11px}.buildings{grid-template-columns:1fr}.answers{grid-template-columns:1fr}}
+</style></head><body>
+<header><div><h1>🏝️ KK 音標冒險群島</h1><p>探索 9 座音標島・學會 41 個 KK 音標・挑戰發音任務</p></div><a href="../">📘 返回經典教材</a></header>
+<main><div class="stats"><div class="stat">🏝️ 島嶼 <strong id="countIslands">0 / 9</strong></div><div class="stat">⭐ 答對題數 <strong id="score">0</strong></div><div class="stat">📚 音標 <strong>41</strong></div></div>
+<section id="worldView"><div class="world" id="world"><span class="cloud a">☁️</span><span class="cloud b">☁️</span><div class="legend">🧭 點擊任一島嶼登島探索</div></div><div class="panel"><h2>歡迎來到音標群島！</h2><p class="sub">每座島有三棟建築：發音學院、單字小屋、挑戰競技場。完成島上的挑戰，就能獲得一枚星星。你可以自由選擇探索順序。</p></div></section>
+<section id="islandView" class="hidden"><button class="back" onclick="goWorld()">← 返回群島地圖</button><div class="panel"><h2 id="islandTitle"></h2><p id="islandDesc" class="sub"></p><div class="dialog"><span class="avatar">🦉</span><div><b>音標島導師 Owl</b><p id="dialogText"></p></div></div><div class="buildings"><button class="building" onclick="openBuilding('academy')"><span class="emoji">🏫</span><strong>發音學院</strong><small>認識音標・聽標準示範</small></button><button class="building" onclick="openBuilding('words')"><span class="emoji">🏡</span><strong>單字小屋</strong><small>單字練習・聽音辨字</small></button><button class="building" onclick="openBuilding('quiz')"><span class="emoji">🏟️</span><strong>挑戰競技場</strong><small>隨機闖關・立即批改</small></button></div><div id="buildingContent"></div></div></section></main>
+<footer>KK Phonics Islands V2 · 獨立互動實驗版 · 進度儲存於本機瀏覽器</footer>
+<script>
+const units=[
+{n:"前母音島",emoji:"🌸",sounds:[["i","see","看見"],["ɪ","sit","坐"],["e","say","說"],["ɛ","bed","床"],["æ","cat","貓"]],desc:"學習前母音，辨別長短音與嘴巴張開程度。"},
+{n:"後母音島",emoji:"🌴",sounds:[["ɑ","hot","熱的"],["ɔ","law","法律"],["o","go","去"],["ʊ","book","書"],["u","food","食物"],["ʌ","cup","杯子"],["ə","about","關於"]],desc:"認識後母音、中央母音與弱讀音。"},
+{n:"雙母音島",emoji:"🌈",sounds:[["aɪ","bike","腳踏車"],["aʊ","cow","乳牛"],["ɔɪ","boy","男孩"],["ɝ","bird","鳥"],["ɚ","teacher","老師"]],desc:"練習滑動母音與捲舌母音。"},
+{n:"爆破音島",emoji:"🌋",sounds:[["p","pen","筆"],["b","boy","男孩"],["t","top","頂端"],["d","dog","狗"],["k","kite","風箏"],["g","goat","山羊"]],desc:"感受氣流瞬間釋放，辨別清音與濁音。"},
+{n:"摩擦音島",emoji:"🍃",sounds:[["f","fish","魚"],["v","van","廂型車"],["θ","think","想"],["ð","this","這個"],["s","sun","太陽"],["z","zoo","動物園"]],desc:"練習齒、唇、舌之間的摩擦發音。"},
+{n:"特殊音島",emoji:"🦋",sounds:[["ʃ","ship","船"],["ʒ","vision","視覺"],["tʃ","chair","椅子"],["dʒ","juice","果汁"]],desc:"辨認 sh、zh、ch、j 的音色差異。"},
+{n:"鼻音島",emoji:"🐳",sounds:[["m","moon","月亮"],["n","nose","鼻子"],["ŋ","sing","唱歌"]],desc:"讓聲音通過鼻腔，練習三種鼻音。"},
+{n:"滑音島",emoji:"🪁",sounds:[["l","lion","獅子"],["r","red","紅色"],["w","water","水"],["j","yes","是"]],desc:"練習舌頭與嘴唇的位置變化。"},
+{n:"總複習島",emoji:"🏰",sounds:[["h","hat","帽子"]],desc:"認識 h 音，回顧整個音標冒險旅程。"}
+];
+const positions=[[14,20],[43,14],[77,21],[26,44],[58,40],[87,52],[12,75],[44,77],[75,80]];
+let current=0,question=null,locked=false;
+let progress;try{progress=JSON.parse(localStorage.getItem("kk-islands-v2")||"{}")}catch(e){progress={}}
+progress.done=Array.isArray(progress.done)?progress.done:[];progress.score=Number(progress.score)||0;
+function save(){try{localStorage.setItem("kk-islands-v2",JSON.stringify(progress))}catch(e){}updateStats()}
+function updateStats(){document.getElementById("countIslands").textContent=progress.done.length+" / 9";document.getElementById("score").textContent=progress.score}
+function say(word){if(!("speechSynthesis" in window)){alert("此瀏覽器不支援語音播放");return}speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(word);u.lang="en-US";u.rate=.78;speechSynthesis.speak(u)}
+function renderWorld(){const el=document.getElementById("world");el.querySelectorAll("button.island").forEach(e=>e.remove());units.forEach((u,i)=>{let b=document.createElement("button");b.className="island"+(progress.done.includes(i)?" done":"");b.style.left=positions[i][0]+"%";b.style.top=positions[i][1]+"%";b.innerHTML='<span class="emoji">'+u.emoji+'</span><b>'+(i+1)+'. '+u.n+'</b><small>'+u.sounds.length+' 個音標 '+(progress.done.includes(i)?"⭐":"")+'</small>';b.onclick=()=>enter(i);b.setAttribute("aria-label","登上"+u.n);el.appendChild(b)})}
+function goWorld(){document.getElementById("islandView").classList.add("hidden");document.getElementById("worldView").classList.remove("hidden");renderWorld();window.scrollTo({top:0,behavior:"smooth"})}
+function enter(i){current=i;let u=units[i];document.getElementById("worldView").classList.add("hidden");document.getElementById("islandView").classList.remove("hidden");document.getElementById("islandTitle").textContent=u.emoji+" 第 "+(i+1)+" 島｜"+u.n;document.getElementById("islandDesc").textContent=u.desc;document.getElementById("dialogText").textContent="歡迎登島！這裡有 "+u.sounds.length+" 個音標等待你探索。先去發音學院認識它們，再到競技場挑戰吧！";document.getElementById("buildingContent").innerHTML="";window.scrollTo({top:0,behavior:"smooth"})}
+function openBuilding(kind){let u=units[current],el=document.getElementById("buildingContent");if(kind==="academy"||kind==="words"){el.innerHTML="<h3>"+(kind==="academy"?"🏫 發音學院":"🏡 單字小屋")+"</h3><p class='sub'>點擊卡片即可播放美式英語單字發音。音標為學習提示；語音使用裝置的 TTS 引擎。</p><div class='soundgrid'></div>";let grid=el.querySelector(".soundgrid");u.sounds.forEach(s=>{let b=document.createElement("button");b.className="sound";b.innerHTML="<b>/"+s[0]+"/</b><em>"+s[1]+"</em><span>"+s[2]+" 🔊</span>";b.onclick=()=>say(s[1]);grid.appendChild(b)})}else startQuiz()}
+function startQuiz(){let pool=units[current].sounds;let target=pool[Math.floor(Math.random()*pool.length)];let all=units.flatMap(x=>x.sounds);let wrong=all.filter(x=>x[0]!==target[0]);wrong.sort(()=>Math.random()-.5);let choices=[target,...wrong.slice(0,3)].sort(()=>Math.random()-.5);question={target,choices};locked=false;let el=document.getElementById("buildingContent");el.innerHTML='<h3>🏟️ 挑戰競技場</h3><p class="sub">聽單字發音，選出目標單字對應的音標。</p><button class="primary" id="playWord">🔊 播放單字</button><div class="question">「'+target[1]+'」的目標音標是？</div><div class="answers" id="answerArea"></div><p id="result" aria-live="polite"></p><button class="secondary hidden" id="nextQuestion">下一題 →</button>';document.getElementById("playWord").onclick=()=>say(target[1]);document.getElementById("nextQuestion").onclick=startQuiz;let area=document.getElementById("answerArea");choices.forEach(s=>{let b=document.createElement("button");b.className="answer";b.textContent="/"+s[0]+"/";b.onclick=()=>answer(b,s[0]);area.appendChild(b)})}
+function answer(btn,symbol){if(locked)return;locked=true;let ok=symbol===question.target[0];document.querySelectorAll(".answer").forEach(b=>{b.disabled=true;if(b.textContent==="/"+question.target[0]+"/")b.classList.add("correct")});if(!ok)btn.classList.add("wrong");else{progress.score++;if(!progress.done.includes(current))progress.done.push(current);save()}document.getElementById("result").textContent=ok?"🎉 答對了！獲得一顆星星！":"再加油！正確答案是 /"+question.target[0]+"/。";document.getElementById("nextQuestion").classList.remove("hidden")}
+renderWorld();updateStats();
+</script></body></html>
